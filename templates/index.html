@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fake Message Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fa;
+            padding: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 30px;
+        }
+        textarea, input[type="file"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p.note {
+            color: #555;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fake Message Detector</h1>
+    <form action="/predict" method="POST" enctype="multipart/form-data">
+        <textarea name="message" rows="5" placeholder="Type or paste a message here..."></textarea>
+        <p>OR</p>
+        <input type="file" name="image" accept="image/*">
+        <button type="submit">Check Message</button>
+    </form>
+    <p class="note">You can either type a message or upload a screenshot/image (supports Hindi + English).</p>
+</body>
+</html>
