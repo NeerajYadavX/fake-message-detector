@@ -15,10 +15,7 @@ nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
 # Load the dataset
-data = pd.read_csv("messages_dataset.csv")  # Ensure this file exists and is correctly named
-
-# Optional: If your labels are strings like "real" and "fake", convert to 0/1
-# data['label'] = data['label'].map({'real': 0, 'fake': 1})
+data = pd.read_csv("messages_dataset.csv") 
 
 # Preprocessing function
 def preprocess_text(text):

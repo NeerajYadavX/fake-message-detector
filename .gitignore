@@ -1,4 +1,5 @@
 venv/
 *.pkl
+!model.pkl
 *.csv
 __pycache__/

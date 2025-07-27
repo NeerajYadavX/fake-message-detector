@@ -24,12 +24,24 @@
       color: #666;
     }
   </style>
+  <script>
+    // Ensure at least one field is filled
+    function validateForm() {
+      const message = document.forms["checkForm"]["message"].value.trim();
+      const image = document.forms["checkForm"]["image"].value;
+      if (message === "" && image === "") {
+        alert("Please enter a message or upload an image.");
+        return false;
+      }
+      return true;
+    }
+  </script>
 </head>
 <body>
   <div class="container text-center">
     <h2 class="mb-4 text-primary">🕵️‍♂️ Fake Message Detector</h2>
     <div class="card">
-      <form action="/predict" method="POST" enctype="multipart/form-data">
+      <form name="checkForm" action="/predict" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
         <div class="mb-3 text-start">
           <label for="message">📩 Enter a message:</label>
           <textarea name="message" class="form-control" rows="4" placeholder="Paste your message here..."></textarea>

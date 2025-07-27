@@ -1,3 +1,5 @@
+import csv
+from datetime import datetime
 from flask import Flask, render_template, request
 import joblib
 import re
@@ -9,6 +11,7 @@ import os
 import uuid
 from PIL import Image
 import pytesseract
+
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # Initialize
@@ -23,6 +26,13 @@ vectorizer = joblib.load('vectorizer.pkl')
 # Flask setup
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
+# CSV setup
+CSV_FILE = "submitted_messages.csv"
+if not os.path.exists(CSV_FILE):
+    with open(CSV_FILE, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(["timestamp", "message", "prediction", "confidence"])
 
 # Text Cleaning Functions
 def clean_text(text):
@@ -60,13 +70,9 @@ def predict():
     # If image is uploaded
     if 'image' in request.files and request.files['image'].filename != '':
         image = request.files['image']
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        filename = f"{uuid.uuid4()}.png"
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        image.save(image_path)
-
         try:
-            image_data = Image.open(image_path)
+            from io import BytesIO
+            image_data = Image.open(BytesIO(image.read()))
             extracted_text = pytesseract.image_to_string(image_data)
             message = extracted_text.strip()
             if not message:
@@ -74,14 +80,13 @@ def predict():
                                        label="Image has no readable text.",
                                        confidence=0,
                                        message="Unable to extract text from image.",
-                                       image_path=image_path)
+                                       image_path=None)
         except Exception as e:
             return render_template('result.html',
                                    label="Image processing failed.",
                                    confidence=0,
                                    message="Could not read the uploaded image.",
-                                   image_path=image_path)
-
+                                   image_path=None)
     else:
         # If message text is entered
         message = request.form['message'].strip()
@@ -99,11 +104,17 @@ def predict():
     prediction = model.predict(vectorized_input)[0]
     confidence = model.predict_proba(vectorized_input).max() * 100
 
+    # Save to CSV
+    with open(CSV_FILE, mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow([datetime.now(), message, prediction, f"{confidence:.2f}"])
+
     return render_template('result.html',
                            label=prediction.capitalize(),
                            confidence=round(confidence, 2),
                            message=message,
-                           image_path=image_path)
+                           image_path=None)
+
 
 # Start the app
 if __name__ == '__main__':
