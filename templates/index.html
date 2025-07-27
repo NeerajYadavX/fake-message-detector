@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Fake Message Detector</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f9fa;
-            padding: 40px;
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-top: 30px;
-        }
-        textarea, input[type="file"] {
-            width: 100%;
-            max-width: 500px;
-            padding: 10px;
-            margin: 10px auto;
-            display: block;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        p.note {
-            color: #555;
-            font-size: 0.9em;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Fake Message Detector</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 650px;
+      margin-top: 80px;
+    }
+    .card {
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .or-divider {
+      text-align: center;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-    <h1>Fake Message Detector</h1>
-    <form action="/predict" method="POST" enctype="multipart/form-data">
-        <textarea name="message" rows="5" placeholder="Type or paste a message here..."></textarea>
-        <p>OR</p>
-        <input type="file" name="image" accept="image/*">
-        <button type="submit">Check Message</button>
-    </form>
-    <p class="note">You can either type a message or upload a screenshot/image (supports Hindi + English).</p>
+  <div class="container text-center">
+    <h2 class="mb-4 text-primary">🕵️‍♂️ Fake Message Detector</h2>
+    <div class="card">
+      <form action="/predict" method="POST" enctype="multipart/form-data">
+        <div class="mb-3 text-start">
+          <label for="message">📩 Enter a message:</label>
+          <textarea name="message" class="form-control" rows="4" placeholder="Paste your message here..."></textarea>
+        </div>
+
+        <div class="or-divider">OR</div>
+
+        <div class="mb-3 text-start">
+          <label for="image">🖼️ Upload an image containing a message:</label>
+          <input type="file" name="image" accept="image/*" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 mt-3">Check Message</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
