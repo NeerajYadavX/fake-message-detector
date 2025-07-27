@@ -1,3 +1,4 @@
+import platform
 import csv
 from datetime import datetime
 from flask import Flask, render_template, request
@@ -13,6 +14,8 @@ from PIL import Image
 import pytesseract
 
 # pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+if platform.system() == 'Windows':
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # Initialize
 nltk.download('stopwords')
