@@ -35,7 +35,7 @@ CSV_FILE = "submitted_messages.csv"
 if not os.path.exists(CSV_FILE):
     with open(CSV_FILE, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(["timestamp", "message", "prediction", "confidence"])
+        writer.writerow(["timestamp", "message", "prediction"])
 
 # Text Cleaning Functions
 def clean_text(text):
@@ -105,18 +105,17 @@ def predict():
     processed_msg = preprocess_text(message)
     vectorized_input = vectorizer.transform([processed_msg])
     prediction = model.predict(vectorized_input)[0]
-    confidence = model.predict_proba(vectorized_input).max() * 100
+    # confidence = model.predict_proba(vectorized_input).max() * 100
 
     # Save to CSV
     with open(CSV_FILE, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow([datetime.now(), message, prediction, f"{confidence:.2f}"])
+        writer.writerow([datetime.now(), message, prediction])
 
     return render_template('result.html',
-                           label=prediction.capitalize(),
-                           confidence=round(confidence, 2),
-                           message=message,
-                           image_path=None)
+                       label=prediction.capitalize(),
+                       message=message,
+                       image_path=None)
 
 
 # Start the app
